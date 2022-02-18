@@ -1,11 +1,14 @@
 {
   "expo": {
-    "name": "myfinances",
+    "name": "MyFinances",
     "slug": "myfinances",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.danielreezende.myfinances"
+    }
   },
   "name": "myfinances"
 }
