@@ -3,14 +3,20 @@ import { Modal, Keyboard, Alert } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import { useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import uuid from 'react-native-uuid'
 
 import { InputForm } from "../../components/Form/InputForm";
 import { Button } from "../../components/Form/Button";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
 import { CategorySelect } from '../CategorySelect';
+
+
 
 import {
   Container,
@@ -41,10 +47,13 @@ export function Register () {
     name: 'Categoria',
   })
   const [categoryModalOpen, setCategoryModalOpen] = useState(false)
+  
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, reset, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const navigation = useNavigation()
 
 
   function handleTransactionTypeSelect(type: 'income' | 'outcome'){
@@ -58,20 +67,49 @@ export function Register () {
     setCategoryModalOpen(true);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
     if(!transactionType) return Alert.alert('Selecione o Tipo da Transação');
 
     if(category.key === 'category') return Alert.alert('Selecione a Categoria')
 
-    const data = {
+    const newTransaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
       transactionType,
-      category: category.key
+      category: category.key,
+      date: new Date(),
     }
 
-    console.log(data)
+    try {
+      const collectionKey = "@myfinances:transactions";
+      const data = await AsyncStorage.getItem(collectionKey);
+      const currentData = data ? JSON.parse(data) : []
+
+      const dataFormatted = [
+        ...currentData,
+        newTransaction,
+      ];
+
+      await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormatted));
+
+      reset();
+      setTransactionType(null);
+      setCategory({
+        key: "category",
+        name: "Categoria",
+      });
+
+      navigation.navigate('Listagem')
+
+    } catch (error) {
+      console.log('Error: ', error);
+
+      Alert.alert("Não foi possível salvar");
+    }
   }
+
+
 
   return (
     <TouchableWithoutFeedback 

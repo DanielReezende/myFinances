@@ -15,6 +15,8 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import { AppRoutes } from './src/router/app.routes'
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
 
 
 export default function App() {
