@@ -36,7 +36,7 @@ const schema = Yup.object().shape({
   name: Yup.string().required('O campo Nome é obrigatório.'),
   amount: Yup.number()
     .typeError('Informe um valor númerico')
-    .required('O campo Nome é obrigatório.')
+    .required('O campo Preço é obrigatório.')
     .positive('O valor informado deve ser positivo')
 })
 
