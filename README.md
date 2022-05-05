@@ -32,7 +32,7 @@
 *Clone the project and access the folder*
 
 ```bash
-$ git clone https://github.com/DanielReezende/myFinances.git
+$ git clone https://github.com/DanielReezende/myfinances.git
 $ cd myfinances
 ```
 
