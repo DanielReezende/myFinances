@@ -1,7 +1,10 @@
 {
+  "name": "myfinances",
+  "displayName": "myfinances",
   "expo": {
     "name": "MyFinances",
     "slug": "myfinances",
+    "scheme": "myfinances",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
@@ -9,6 +12,5 @@
     "android": {
       "package": "com.danielreezende.myfinances"
     }
-  },
-  "name": "myfinances"
+  }
 }
