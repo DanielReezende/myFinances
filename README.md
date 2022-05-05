@@ -1,6 +1,5 @@
 <div align="center">
   <img src="assets/icon.png" width="150" />
-  <h1>MyFinances</h1>
   <p>💸 Personal finance management app 💸</p>
 </div>
 
