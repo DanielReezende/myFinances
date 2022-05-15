@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-import { useTheme } from 'styled-components'
+import { useTheme } from "styled-components";
 
 import { HighlightCard } from "../../components/HighlightCard";
 import {
   TransactionCard,
   TransactionCardProps,
 } from "../../components/TransactionCard";
+import { useAuth } from "../../hooks/useAuth";
 
 import {
   Container,
@@ -54,26 +55,37 @@ export function Dashboard() {
   );
 
   const theme = useTheme();
+  const { signOut, user } = useAuth();
 
-  function getLastTransactionDate(collection: DataTransactionListProps[], type: 'income' | 'outcome') {
-    const lastTransition = new Date(Math.max.apply(
-      Math,
-      collection
-        .filter(
-          (transaciton: DataTransactionListProps) => transaciton.type === type
-        )
-        .map((transaciton: DataTransactionListProps) =>
-          new Date(transaciton.date).getTime()
-        )
-    ));
+  function getLastTransactionDate(
+    collection: DataTransactionListProps[],
+    type: "income" | "outcome"
+  ) {
+    const collectionFilttered = collection.filter(
+      (transaction) => transaction.type === type
+    );
 
-    return `${lastTransition.getDate()} de ${lastTransition.toLocaleString('pt-BR', {
-      month: 'long'
-    })}`;
+    console.log(type, collectionFilttered);
+
+    if (collectionFilttered.length === 0) return 0;
+
+    const lastTransaction = new Date(
+      Math.max.apply(
+        Math,
+        collectionFilttered.map((transaction) =>
+          new Date(transaction.date).getTime()
+        )
+      )
+    );
+
+    return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString(
+      "pt-BR",
+      { month: "long" }
+    )}`;
   }
 
   async function loadTransactions() {
-    const collectionKey = "@myfinances:transactions";
+    const collectionKey = `@myfinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(collectionKey);
 
     const transactions = response ? JSON.parse(response) : [];
@@ -111,11 +123,12 @@ export function Dashboard() {
       }
     );
 
-
     const lastTransitionIncome = getLastTransactionDate(transactions, "income");
-    const lastTransitionOutcome = getLastTransactionDate(transactions, "outcome");
+    const lastTransitionOutcome = getLastTransactionDate(
+      transactions,
+      "outcome"
+    );
     const totalInterval = `01 a ${lastTransitionOutcome}`;
-    
 
     const total = incomesTotal - outcomesTotal;
 
@@ -170,16 +183,16 @@ export function Dashboard() {
               <UserInfo>
                 <Photo
                   source={{
-                    uri: "https://avatars.githubusercontent.com/u/38768631?v=4",
+                    uri: user.photo,
                   }}
                 />
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Daniel</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
 
-              <LogoutButton onPress={() => {}}>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>

@@ -27,6 +27,7 @@ import {
   Title,
   ChartContainer,
 } from "./styles";
+import { useAuth } from "../../hooks/useAuth";
 
 interface TransactionData {
   id: string;
@@ -52,13 +53,14 @@ export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
-
+  
+  const { user } = useAuth();
   const theme = useTheme();
 
   async function loadData() {
     try {
       setIsLoading(true);
-      const collectionKey = "@myfinances:transactions";
+      const collectionKey = `@myfinances:transactions_user:${user.id}`;
       const response = await AsyncStorage.getItem(collectionKey);
       const responseFormatted = response ? JSON.parse(response) : [];
 

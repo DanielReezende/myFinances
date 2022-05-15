@@ -6,9 +6,11 @@
     "slug": "myfinances",
     "scheme": "myfinances",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#2C2C2E"
+    },
     "android": {
       "package": "com.danielreezende.myfinances"
     }

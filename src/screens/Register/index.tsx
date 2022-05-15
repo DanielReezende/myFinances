@@ -26,6 +26,7 @@ import {
   Fields,
   TransactionsTypes,
 } from "./styles";
+import { useAuth } from "../../hooks/useAuth";
 
 interface FormData {
   name: string;
@@ -55,6 +56,8 @@ export function Register () {
 
   const navigation = useNavigation()
 
+  const { user } = useAuth();
+
 
   function handleTransactionTypeSelect(type: 'income' | 'outcome'){
     setTransactionType(type);
@@ -82,7 +85,7 @@ export function Register () {
     }
 
     try {
-      const collectionKey = "@myfinances:transactions";
+      const collectionKey = `@myfinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(collectionKey);
       const currentData = data ? JSON.parse(data) : []
 

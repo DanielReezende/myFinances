@@ -14,13 +14,13 @@ import {
 import theme from './src/global/styles/theme'
 import { NavigationContainer } from '@react-navigation/native'
 
-import { AppRoutes } from './src/router/app.routes'
+import { Routes } from "./src/routes";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import 'intl'
 import 'intl/locale-data/jsonp/pt-BR'
 
 import { SignIn } from './src/screens/SignIn';
-import { AuthProvider } from './src/hooks/auth';
+import { AuthProvider } from './src/hooks/useAuth';
 
 
 export default function App() {
@@ -41,7 +41,7 @@ export default function App() {
           <StatusBar barStyle="light-content" />
 
           <AuthProvider>
-            <SignIn />
+            <Routes />
           </AuthProvider>
         </NavigationContainer>
       </ThemeProvider>

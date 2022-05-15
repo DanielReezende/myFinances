@@ -1,19 +1,16 @@
 import React from "react";
-import { Platform } from 'react-native';
-import { useTheme } from 'styled-components';
-import { MaterialIcons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Platform } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useTheme } from "styled-components";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-// Screens 
 import { Dashboard } from "../screens/Dashboard";
 import { Register } from "../screens/Register";
 import { Resume } from "../screens/Resume";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-
 export function AppRoutes() {
-
   const theme = useTheme();
 
   return (
@@ -24,8 +21,8 @@ export function AppRoutes() {
         tabBarInactiveTintColor: theme.colors.text,
         tabBarLabelPosition: "beside-icon",
         tabBarStyle: {
-          height: 88,
           paddingVertical: Platform.OS === "ios" ? 20 : 0,
+          height: 88,
         },
       }}
     >
@@ -42,7 +39,6 @@ export function AppRoutes() {
           ),
         }}
       />
-
       <Screen
         name="Cadastrar"
         component={Register}
